@@ -1,17 +1,36 @@
+server:
+  port: 8082
+
+jwt:
+  secret: filestorage
+
 cloud:
   aws:
     s3:
+      url: http://localhost:9900/minio/
       credentials:
-        access-key: ${S3_ACCESS_KEY}
-        secret-key: ${S3_SECRET_KEY}
-      region: us-east-2
+        access-key: filestorage_test
+        secret-key: filestorage1978
+      public-bucket:
+          name: filestorage-pub
+      region:
+        static: us-east-1
+        auto: false
       stack:
         auto: false
-      public-bucket:
-        name: ${S3_BUCKET}
-
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/filestorage
+    driver-class-name: org.postgresql.Driver
+    username: filestorage
+    password: filestorage1978
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
   servlet:
     multipart:
       enabled: true
@@ -19,5 +38,4 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
 
-server:
-  port: 8081
+
