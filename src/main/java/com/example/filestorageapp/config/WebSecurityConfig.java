@@ -1,4 +1,4 @@
-package config.jwt;
+package com.example.filestorageapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

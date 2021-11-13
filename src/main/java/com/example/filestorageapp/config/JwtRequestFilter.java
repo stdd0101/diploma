@@ -1,5 +1,6 @@
-package config.jwt;
+package com.example.filestorageapp.config;
 
+import com.example.filestorageapp.service.JwtTokenUtil;
 import com.example.filestorageapp.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
