@@ -7,17 +7,20 @@ jwt:
 cloud:
   aws:
     s3:
-      url: http://localhost:9900/minio/
       credentials:
         access-key: filestorage_test
         secret-key: filestorage1978
-      public-bucket:
-          name: filestorage-pub
       region:
         static: us-east-1
         auto: false
       stack:
         auto: false
+
+application:
+  s3:
+    url: http://localhost:9900/minio/
+    bucket:
+      name: filestorage-pub
 
 spring:
   datasource:

@@ -1,4 +1,4 @@
-package config.jwt;
+package com.example.filestorageapp.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
