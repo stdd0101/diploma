@@ -33,6 +33,7 @@ spring:
     username: postgres
     password: postgres
 
+  sql.init.mode: always
   jpa:
     properties:
       hibernate:
@@ -40,6 +41,9 @@ spring:
         # Hibernate ddl auto (create, create-drop, validate, update)
         ddl-auto: update
     generate-ddl: true
+  defer-datasource-initialization: true
+
+
 
   servlet:
     multipart:
