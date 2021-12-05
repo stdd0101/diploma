@@ -23,16 +23,23 @@ application:
       name: filestorage-pub
 
 spring:
+  security:
+    user:
+        password: user12345
+
   datasource:
     url: jdbc:postgresql://localhost:5435/filestorage
     driver-class-name: org.postgresql.Driver
-    username: filestorage
-    password: filestorage1978
+    username: postgres
+    password: postgres
 
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Hibernate ddl auto (create, create-drop, validate, update)
+        ddl-auto: update
+    generate-ddl: true
 
   servlet:
     multipart:
