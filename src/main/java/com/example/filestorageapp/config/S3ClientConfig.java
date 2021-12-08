@@ -6,12 +6,12 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class S3Client {
+public class S3ClientConfig {
     @Value("${cloud.aws.s3.credentials.access-key}")
     private String accessKey;
 
@@ -24,8 +24,8 @@ public class S3Client {
     @Value("${application.s3.url}")
     private String url;
 
-    @Autowired
-    public AmazonS3 s3Client() {
+    @Bean
+    public AmazonS3 s3() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(url, region))
                 .withPathStyleAccessEnabled(true)
