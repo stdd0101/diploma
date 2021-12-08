@@ -18,14 +18,14 @@ cloud:
 
 application:
   s3:
-    url: http://localhost:9900/minio/
+    url: http://localhost:9900
     bucket:
       name: filestorage-pub
 
 spring:
   security:
     user:
-        password: user12345
+       password: user
 
   datasource:
     url: jdbc:postgresql://localhost:5435/filestorage
@@ -33,16 +33,18 @@ spring:
     username: postgres
     password: postgres
 
-  sql.init.mode: always
+  #sql.init.mode: always  #init db from .sql script -- создает структуру
   jpa:
     properties:
       hibernate:
+        format-sql: true #2
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        # Hibernate ddl auto (create, create-drop, validate, update)
-        ddl-auto: update
-    generate-ddl: true
-  defer-datasource-initialization: true
+        # -- Hibernate ddl auto (create, create-drop, validate, update)
+        ddl-auto:  create
 
+    generate-ddl: true
+    show-sql: true #2 -- показывает код в консоли
+  defer-datasource-initialization: true #1
 
 
   servlet:

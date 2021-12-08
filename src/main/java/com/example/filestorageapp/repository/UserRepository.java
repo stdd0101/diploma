@@ -1,11 +1,11 @@
-package com.example.filestorageapp.repository;
-
-import com.example.filestorageapp.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
-
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findByUsernameOrEmail(String username, String email);
-}
+//package com.example.filestorageapp.repository;
+//
+//import com.example.filestorageapp.domain.UserOld;
+//import org.springframework.data.repository.CrudRepository;
+//
+//public interface UserRepository extends CrudRepository<UserOld, Long> {
+//
+//    UserOld findByEmail(String email);
+//
+//    UserOld findByUsername(String username);
+//}
