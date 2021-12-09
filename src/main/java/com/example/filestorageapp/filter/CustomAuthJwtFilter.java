@@ -2,8 +2,10 @@ package com.example.filestorageapp.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.filestorageapp.model.ErrorBag;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,10 +26,13 @@ import java.util.Map;
 @Slf4j
 public class CustomAuthJwtFilter extends UsernamePasswordAuthenticationFilter {
 
+    private String secret;
+
     private final AuthenticationManager authenticationManager;
 
-    public CustomAuthJwtFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthJwtFilter(AuthenticationManager authenticationManager, String secret) {
         this.authenticationManager = authenticationManager;
+        this.secret = secret;
     }
 
     @Override
@@ -46,7 +51,9 @@ public class CustomAuthJwtFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
 
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        log.info("secret: {}", secret);
+
+        Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
         String auth_token = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
@@ -63,12 +70,9 @@ public class CustomAuthJwtFilter extends UsernamePasswordAuthenticationFilter {
 
         log.info("refresh_token {}", refresh_token);
 
-        //response.setHeader("auth_token", auth_token);
-        //response.setHeader("refresh_token", refresh_token);
-
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("auth_token", auth_token);
-        tokens.put("refresh_token", refresh_token);
+        tokens.put("auth-token", auth_token);
+        tokens.put("refresh-token", refresh_token);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -77,6 +81,16 @@ public class CustomAuthJwtFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+
+        Integer status = HttpStatus.BAD_REQUEST.value();
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status);
+
+        ErrorBag error = new ErrorBag()
+                .setMessage("Unsuccessful authentication.")
+                .setStatus(status);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
 }

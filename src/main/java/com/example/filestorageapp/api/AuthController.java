@@ -8,7 +8,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.filestorageapp.domain.User;
 import com.example.filestorageapp.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +24,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/cloud")
-@RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
+    private String secret;
+
     private final UserService userService;
+
+    public AuthController(@Value("${application.jwt.secret}") String secret, UserService userService) {
+        this.secret = secret;
+        this.userService = userService;
+    }
 
     @PostMapping("/auth_token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
@@ -34,7 +42,9 @@ public class AuthController {
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             try {
                 String token = authHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                log.info("secret- {}", secret);
+
+                Algorithm algorithm = Algorithm.HMAC256("filestorage".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
@@ -48,7 +58,7 @@ public class AuthController {
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("auth_token", auth_token);
+                tokens.put("auth-token", auth_token);
 
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 

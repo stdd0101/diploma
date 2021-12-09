@@ -1,9 +1,6 @@
 server:
   port: 8082
 
-jwt:
-  secret: filestorage
-
 cloud:
   aws:
     s3:
@@ -17,6 +14,9 @@ cloud:
         auto: false
 
 application:
+  jwt:
+    secret: filestorage
+
   s3:
     url: http://localhost:9900
     bucket:
@@ -53,5 +53,4 @@ spring:
       file-size-threshold: 2MB
       max-file-size: 5MB
       max-request-size: 10MB
-
 
