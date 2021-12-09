@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.filestorageapp.model.ErrorBag;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +20,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    private String secret;
+
+    public CustomAuthorizationFilter(String secret) {
+        this.secret = secret;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,7 +42,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if(authHeader != null && authHeader.startsWith("Bearer ")) {
                 try {
                     String token = authHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
@@ -50,12 +55,16 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
 
                 } catch (Exception e) {
-                    log.error(e.getMessage());
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    Integer status = HttpStatus.FORBIDDEN.value();
+
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    Map<String, String> errors = new HashMap<>();
-                    errors.put("error", e.getMessage());
-                    new ObjectMapper().writeValue(response.getOutputStream(), errors);
+                    response.setStatus(status);
+
+                    ErrorBag error = new ErrorBag()
+                            .setMessage("Unsuccessful authentication.")
+                            .setStatus(status);
+
+                    new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
 
             } else {

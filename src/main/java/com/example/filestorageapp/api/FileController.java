@@ -1,5 +1,6 @@
 package com.example.filestorageapp.api;
 
+import com.example.filestorageapp.domain.FileDTO;
 import com.example.filestorageapp.service.StorageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cloud")
@@ -19,23 +21,19 @@ public class FileController {
     private final StorageServiceImpl service;
 
     @PostMapping(path = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> uploadFile(@RequestParam(value = "filename")  MultipartFile filename) {
-        try {
-            service.upload(filename);
-            return new ResponseEntity("Uploaded", HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity("False", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+    public ResponseEntity<?> uploadFile(@RequestParam(value = "filename") MultipartFile filename) throws IOException {
+        service.upload(filename);
+        return new ResponseEntity("Success upload.", HttpStatus.OK);
     }
 
     @DeleteMapping("/file/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        return new ResponseEntity<>(service.delete(fileName), HttpStatus.OK);
+        service.delete(fileName);
+        return new ResponseEntity<>("Success deleted.", HttpStatus.OK);
     }
 
     @GetMapping("/file/{fileName}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+    public ResponseEntity<?> downloadFile(@PathVariable String fileName) throws IOException {
         byte[] data = service.download(fileName);
         ByteArrayResource resource = new ByteArrayResource(data);
         return ResponseEntity
@@ -46,8 +44,15 @@ public class FileController {
                 .body(resource);
     }
 
-    //@PutMapping("/file/{fileName}")
+    @PutMapping("/file/{fileName}")
+    public ResponseEntity<String> editFilename(@PathVariable(required = true) String fileName,
+                                               @RequestParam(required = true) String name) {
+        service.renameFile(fileName, name);
+        return new ResponseEntity<>("Success renamed.", HttpStatus.OK);
+    }
 
-    //@GetMapping("/list")
-
+    @GetMapping("/list")
+    public ResponseEntity<List<FileDTO>> getAll() {
+        return ResponseEntity.ok().body(service.getAll());
+    }
 }
