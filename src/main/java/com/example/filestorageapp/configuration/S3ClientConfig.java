@@ -1,4 +1,4 @@
-package com.example.filestorageapp.config;
+package com.example.filestorageapp.configuration;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

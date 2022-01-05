@@ -20,18 +20,9 @@ public class MinioIntegrationTest {
 
     private AmazonS3 s3Client;
 
-// для тестового контейнера
-//    private static final DockerComposeContainer minioContainer = new DockerComposeContainer<>(new File("src/test/resources/docker-compose.yml"))
-//            .withExposedService("minio-service", 9990);
-//    private static final String MINIO_ENDPOINT = "http://localhost:9990";
-//    private static final String ACCESS_KEY = "minio";
-//    private static final String SECRET_KEY = "minio123";
-//    private static final String BUCKET_NAME = "test-minio-bucket";
-
-
-// для запущенного контейнера
     private static final GenericContainer<?> minioContainer = new GenericContainer<>("minio/minio")
             .withExposedPorts(9900);
+
     private static final String MINIO_ENDPOINT = "http://localhost:9900";
     private static final String ACCESS_KEY = "filestorage_test";
     private static final String SECRET_KEY = "filestorage1978";
@@ -39,9 +30,7 @@ public class MinioIntegrationTest {
 
     @BeforeAll
     public void setUp() {
-        //minioContainer.start(); //для нового контейнера
         initializeS3Client();
-        //createBucket(); //для нового контейнера
     }
 
     @AfterAll

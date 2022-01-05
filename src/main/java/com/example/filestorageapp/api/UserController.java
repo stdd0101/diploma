@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cloud")
 @RequiredArgsConstructor
-public class UserResourse {
+public class UserController {
 
     private final UserService userService;
 
