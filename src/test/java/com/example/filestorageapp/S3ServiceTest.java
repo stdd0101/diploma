@@ -4,30 +4,25 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CopyObjectResult;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.example.filestorageapp.service.S3Service;
-import org.junit.Before;
-import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class S3ServiceTest {
 
     private static final String BUCKET_NAME = "filestorage-pub";
-    private static final String KEY_NAME = "file.txt";
-
+    private static final String KEY_NAME = "file1.txt";
     private static final String KEY_NAME2 = "file2.txt";
 
     private AmazonS3 s3;
+
     private S3Service service;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         s3 = mock(AmazonS3.class);
         service = new S3Service(s3);
@@ -40,8 +35,8 @@ public class S3ServiceTest {
 
     @Test
     public void whenVerifyingIfS3BucketExist_thenCorrect() {
-        service.doesBucketExist(BUCKET_NAME);
-        verify(s3).doesBucketExistV2(BUCKET_NAME);
+        (new S3Service(s3)).doesBucketExist(BUCKET_NAME);
+        verify(s3, atLeastOnce()).doesBucketExistV2(BUCKET_NAME);
     }
 
     @Test

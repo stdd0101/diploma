@@ -50,7 +50,7 @@ public class FileControllerTest {
 
     @Test
     @WithMockUser(username = "stdd01@gmail.com", password = "stzv78@yandex.ru", roles = "USER")
-    void uploadFile() throws Exception {
+    void uploadFileTest() throws Exception {
         MockMultipartFile file
                 = new MockMultipartFile(
                 "filename",
@@ -70,7 +70,7 @@ public class FileControllerTest {
 
     @Test
     @WithMockUser(username = "stdd01@gmail.com", password = "stzv78@yandex.ru", roles = "USER")
-    void deleteFile() throws Exception {
+    void deleteFileTest() throws Exception {
 
         doNothing().when(service).delete(anyString());
 
@@ -83,7 +83,7 @@ public class FileControllerTest {
 
     @Test
     @WithMockUser(username = "stdd01@gmail.com", password = "stzv78@yandex.ru", roles = "USER")
-    void downloadFile() throws Exception {
+    void downloadFileTest() throws Exception {
         String fileContent = "File download test";
 
         when(service.download(anyString())).thenReturn(fileContent.getBytes());
