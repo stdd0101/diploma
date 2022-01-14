@@ -6,7 +6,7 @@ cloud:
     s3:
       credentials:
         access-key: filestorage_test
-        secret-key: filestorage1978
+        secret-key: filestorage
       region:
         static: us-east-1
         auto: false

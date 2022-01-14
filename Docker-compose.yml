@@ -14,7 +14,7 @@ services:
 
   postgresql:
     container_name: ${APP_NAME}-postgresql
-    image: postgres:10.10
+    image: postgres:12.3-alpine
     restart: always
     ports:
       - 5435:5435
