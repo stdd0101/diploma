@@ -7,7 +7,7 @@
 ## Компоненты реализации
 
 - Приложение разработано с использованием Spring Boot, Spring Security
-- Для хранения данных пользователей использована база данных Postgresql 12
+- Для хранения данных пользователей использована база данных Postgresql
 - Для хранения файлов использован Amason s3
 - Использован сборщик пакетов gradle
 - Для запуска используется docker, docker-compose
@@ -19,7 +19,7 @@
 - username: stdd01@gmail.com
 - password: stzv78@yandex.ru
 
-[Документация REST API](/doc/filestorage.md))
+[Документация REST API](/doc/filestorage.md)
 
 ## Локальный клиент s3 minio
 - http://localhost:9900/minio/login
