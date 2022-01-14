@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "6e7afcf6-5e5e-4554-9121-d8da7e211056",
+		"name": "filestorage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "stdd01@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "stzv78@yandex.ru",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/cloud/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/cloud/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2xvZ2luIiwiZXhwIjoxNjM4OTgxNTExfQ.Z25ed7oBxCv1vPlW9Lic-niT5hRkdYPVxTpZVcQTDtc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/cloud/auth_token/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"auth_token",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "files",
+			"item": [
+				{
+					"name": "file",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/C:/Users/user/Pictures/5.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/cloud/file",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "file rename",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2xvZ2luIiwiZXhwIjoxNjM5MDkwNDE3fQ.EsrMO2LVByP__hyrRvmKsxWGMNUS1_jUAZ4hSKsBfM4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "newName.jpg",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/cloud/file/1639089881302_240_F_378248025_94Yty6t31BKKtn1fJ8HMImxpgjWCKJRJ.jpg",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"file",
+								"1639089881302_240_F_378248025_94Yty6t31BKKtn1fJ8HMImxpgjWCKJRJ.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "file delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2xvZ2luIiwiZXhwIjoxNjM5MDc3NzUwfQ.LTsvTOQoqb6mVvSCyC_I5OsWPUqJlhHNe7vgKTV5WXI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/cloud/file/1639076249866_kfh5cuin_md.jpg",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"file",
+								"1639076249866_kfh5cuin_md.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "file download",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2F1dGhfdG9rZW4vcmVmcmVzaCIsImV4cCI6MTYzOTA3MTY0Nn0.9mkNIsR7-i_U-Nl7M0GU12ZGhkXLdLlY2VIwqRMUqvo ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/C:/Users/user/Pictures/5.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/cloud/file",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list all files",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2xvZ2luIiwiZXhwIjoxNjM5MDkwNDE3fQ.EsrMO2LVByP__hyrRvmKsxWGMNUS1_jUAZ4hSKsBfM4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/cloud/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cloud",
+								"list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGRkMDFAZ21haWwuY29tIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2Nsb3VkL2xvZ2luIiwiZXhwIjoxNjM4OTg0MzYzfQ.4e01tT1UrS4m1_SJZq1_lcoAIPaSJBwS-To3bGHURuo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/cloud/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"cloud",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
