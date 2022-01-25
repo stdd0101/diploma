@@ -29,7 +29,6 @@ public class StorageServiceImpl {
         this.s3service = s3service;
     }
 
-    //upload files
     public String upload(MultipartFile file) throws IOException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -42,19 +41,16 @@ public class StorageServiceImpl {
         return s3Url.toExternalForm();
     }
 
-    //download file
     public byte[] download(String fileName) throws AmazonS3Exception, IOException{
         S3ObjectInputStream inputStream = s3service.getContent(s3service.getObject(bucketName, fileName));
         byte[] content = IOUtils.toByteArray(inputStream);
         return content;
     }
 
-    //delete file
     public void delete(String fileName) throws AmazonServiceException {
         s3service.deleteObject(bucketName, fileName);
     }
 
-    //get all files
     public List<FileDTO> getAll() throws AmazonServiceException {
         List<FileDTO> listUri = new ArrayList<FileDTO>();
         ObjectListing objectListing = s3service.listObjects(bucketName);
@@ -66,7 +62,6 @@ public class StorageServiceImpl {
         return listUri;
     }
 
-    //rename file
     public void renameFile(String oldFileName, String newFileName) throws AmazonServiceException  {
         log.info("oldFileName: {}, newFileName: {}", oldFileName, newFileName);
         s3service.copyObject(bucketName, oldFileName, bucketName, newFileName);

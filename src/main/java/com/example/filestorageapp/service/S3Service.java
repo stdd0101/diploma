@@ -16,42 +16,34 @@ public class S3Service {
         this.s3client = s3client;
     }
 
-    //is bucket exist
     public boolean doesBucketExist(String bucketName) {
         return s3client.doesBucketExistV2(bucketName);
     }
 
-    //create a bucket
     public Bucket createBucket(String bucketName) {
         return s3client.createBucket(bucketName);
     }
 
-    //list all buckets
     public List<Bucket> listBuckets() {
         return s3client.listBuckets();
     }
 
-    //delete a bucket
     public void deleteBucket(String bucketName) {
         s3client.deleteBucket(bucketName);
     }
 
-    //uploading object
     public PutObjectResult putObject(String bucketName, String key, File file) {
         return s3client.putObject(bucketName, key, file);
     }
 
-    //get object url
     public URL getUrl(String bucketName, String key) {
         return s3client.getUrl(bucketName, key);
     }
 
-    //listing objects
     public ObjectListing listObjects(String bucketName) {
         return s3client.listObjects(bucketName);
     }
 
-    //copying an object
     public CopyObjectResult copyObject(
             String sourceBucketName,
             String sourceKey,
@@ -66,19 +58,15 @@ public class S3Service {
         );
     }
 
-    //get an object
     public S3Object getObject(String bucketName, String objectKey) {
         return s3client.getObject(bucketName, objectKey);
     }
 
-    //get object content
     public S3ObjectInputStream getContent(S3Object object) {
         return object.getObjectContent();
     }
 
-    //deleting an object
     public void deleteObject(String bucketName, String objectKey) {
         s3client.deleteObject(bucketName, objectKey);
     }
-
 }
