@@ -1,10 +1,7 @@
 package com.example.filestorageapp.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.filestorageapp.model.ErrorBag;
+import com.example.filestorageapp.service.AuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -24,28 +21,26 @@ import java.util.ArrayList;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private String secret;
+    private final AuthService authService;
 
-    public CustomAuthorizationFilter(String secret) {
-        this.secret = secret;
+    public CustomAuthorizationFilter(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletPath().equals("cloud/login")
+        if (request.getServletPath().equals("cloud/login")
                 || request.getServletPath().equals("api/auth_token/refresh")
                 || request.getServletPath().equals("api/logout")) {
             filterChain.doFilter(request, response);
         } else {
             log.info(request.getHeader(HttpHeaders.AUTHORIZATION));
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 try {
                     String token = authHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-                    JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = verifier.verify(token);
-                    String username = decodedJWT.getSubject();
+
+                    String username = authService.getUsernameFromToken(token);
 
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());

@@ -16,6 +16,7 @@ cloud:
 application:
   jwt:
     secret: filestorage
+    issuer: http://localhost:8082/cloud
 
   s3:
     url: http://localhost:9900

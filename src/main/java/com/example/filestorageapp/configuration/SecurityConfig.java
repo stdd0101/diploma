@@ -3,9 +3,9 @@ package com.example.filestorageapp.configuration;
 import com.example.filestorageapp.config.JwtAuthenticationEntryPoint;
 import com.example.filestorageapp.filter.CustomAuthJwtFilter;
 import com.example.filestorageapp.filter.CustomAuthorizationFilter;
+import com.example.filestorageapp.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,9 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Value("${application.jwt.secret}")
-    private String secret;
+    private final AuthService authService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -32,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthJwtFilter authFilter = new CustomAuthJwtFilter(super.authenticationManagerBean(), secret);
+        CustomAuthJwtFilter authFilter = new CustomAuthJwtFilter(super.authenticationManagerBean(), authService);
         //custom url for api login
         authFilter.setFilterProcessesUrl("/cloud/login");
 
@@ -46,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         http.addFilter(authFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(secret), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthorizationFilter(authService), UsernamePasswordAuthenticationFilter.class);
 
 //        http.logout(logout -> logout
 //                .logoutUrl("/cloud/logout")
